@@ -2,6 +2,8 @@
 
 using namespace std;
 
+
+
 class Algorithms{
 
     public:
@@ -87,8 +89,17 @@ class Algorithms{
         }
 
 
-        void mergeSort(){
+        void mergeSort(int numbers[], int i, int k){
+            
+            void merge(int numbers[], i, j, k){
+                int mergedSize = k - i + 1;
+                int mergePos = 0;
+                int leftPos = 0;
+                int rightPos = 0;
 
+                
+
+            }
         }
 
 };
