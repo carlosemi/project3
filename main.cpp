@@ -2,121 +2,125 @@
 
 using namespace std;
 
+class Algorithms
+{
 
+public:
+    //This function is for selection sort
+    void selectionSort(int numbers[], int numbersSize)
+    {
 
-class Algorithms{
+        int i = 0;
+        int j = 0;
 
-    public:
-        //This function is for selection sort
-        void selectionSort(int numbers[], int numbersSize){
+        int indexSmallest = 0;
+        int temp = 0;
 
-            int i = 0;
-            int j = 0;
+        for (i = 0; i < numbersSize; i++)
+        {
 
-            int indexSmallest = 0;
-            int temp = 0;
+            //Find index of smallest remaining element
+            indexSmallest = i;
 
-            for(i = 0; i < numbersSize; i++){
+            for (j = i + 1; j < numbersSize; j++)
+            {
 
-                //Find index of smallest remaining element 
-                indexSmallest = i; 
-
-                for(j = i + 1; j < numbersSize; j++){
-
-                    if( numbers[j] < numbers[indexSmallest]){
-                        indexSmallest = j;
-                    }
-                }
-
-                //Swap numbers[i] and numbers[indexSmallest]
-                temp = numbers[i];
-                numbers[i] = numbers[indexSmallest];
-                numbers[indexSmallest] = temp;
-            }
-
-            //Print the sorted array
-            cout << "Selection Sort: ";
-            for(int z = 0; z < numbersSize; z++){
-
-                cout << numbers[z] << " ";
-            }
-
-            cout << endl;
-        }
-
-
-        void insertionSort(int numbers[], int numbersSize){
-            int i = 0;
-            int j = 0;
-
-            int temp = 0; //Temporary variable for swap
-
-            for(i = 1; i < numbersSize; i++){
-
-                j = i;
-                //Insert numbers[i] into sorted array
-                //stopping once numbers[i] in correct position
-
-                while(j > 0 && numbers[j] < numbers[j - 1] ){
-
-                    //Swap numbers[j] and numbers[j - 1]
-                    temp = numbers[j];
-                    numbers[j] = numbers[j - 1];
-                    numbers[j - 1] = temp;
-
-                    --j;
+                if (numbers[j] < numbers[indexSmallest])
+                {
+                    indexSmallest = j;
                 }
             }
 
-            //Print the Insertion array
-            cout << "Insertion Sort: ";
-            for(int z = 0; z < numbersSize; z++){
+            //Swap numbers[i] and numbers[indexSmallest]
+            temp = numbers[i];
+            numbers[i] = numbers[indexSmallest];
+            numbers[indexSmallest] = temp;
+        }
 
-                cout << numbers[z] << " ";
+        //Print the sorted array
+        cout << "Selection Sort: ";
+        for (int z = 0; z < numbersSize; z++)
+        {
+
+            cout << numbers[z] << " ";
+        }
+
+        cout << endl;
+    }
+
+    void insertionSort(int numbers[], int numbersSize)
+    {
+        int i = 0;
+        int j = 0;
+
+        int temp = 0; //Temporary variable for swap
+
+        for (i = 1; i < numbersSize; i++)
+        {
+
+            j = i;
+            //Insert numbers[i] into sorted array
+            //stopping once numbers[i] in correct position
+
+            while (j > 0 && numbers[j] < numbers[j - 1])
+            {
+
+                //Swap numbers[j] and numbers[j - 1]
+                temp = numbers[j];
+                numbers[j] = numbers[j - 1];
+                numbers[j - 1] = temp;
+
+                --j;
             }
-
-            cout << endl;
         }
 
+        //Print the Insertion array
+        cout << "Insertion Sort: ";
+        for (int z = 0; z < numbersSize; z++)
+        {
 
-        void shellSort(){
-
+            cout << numbers[z] << " ";
         }
 
+        cout << endl;
+    }
 
-        void quickSort(){
+    void shellSort()
+    {
+    }
 
-        }
+    void quickSort()
+    {
+    }
 
+    void mergeSort(int numbers[], int i, int k)
+    {
 
-        void mergeSort(int numbers[], int i, int k){
-            
-            void merge(int numbers[], i, j, k){
-                int mergedSize = k - i + 1;
-                int mergePos = 0;
-                int leftPos = 0;
-                int rightPos = 0;
+        // void merge(int numbers[], i, j, k){
+        //     int mergedSize = k - i + 1;
+        //     int mergePos = 0;
+        //     int leftPos = 0;
+        //     int rightPos = 0;
 
-                
-
-            }
-        }
-
+        // }
+    }
 };
 
-int main(){
+int main()
+{
 
     //cout << ("Starting Program") << endl;
 
-    int array [] = {4, 3, 8, 5, 6};
+    int array[] = {4, 3, 8, 5, 6};
 
     int size = sizeof(array) / sizeof(array[0]);
     cout << "Size of array: " << size << endl;
     cout << "Unsorted array: ";
 
-    for(int z = 0; z < 5; z++){
+    for (int z = 0; z < 5; z++)
+    {
 
-                cout << array[z] << " ";
+        cout << array[z] << " ";
     }
 
     cout << endl;
@@ -125,6 +129,4 @@ int main(){
 
     //algo.selectionSort(array, size);
     algo.insertionSort(array, size);
-
-    
 }
