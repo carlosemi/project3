@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 
 using namespace std;
 
@@ -91,8 +92,36 @@ public:
     }
     //---------------------------------------------------------------------------------
     //                            SHELL SORT
-    void shellSort()
+    // Check because wasn't working perfectly !!!!!
+    void insertionSortInterleaved(int numbers[], int numbersSize, int startIndex, int gap)
     {
+        int i = 0;
+        int j = 0;
+        int temp = 0;
+
+        for (i = startIndex + gap; i < numbersSize; i = i + gap)
+        {
+            j = i;
+
+            while (j - gap >= startIndex && numbers[j] < numbers[j - gap])
+            {
+                temp = numbers[j];
+                numbers[j] = numbers[j - gap];
+                numbers[j - gap] = temp;
+                j = j - gap;
+            }
+        }
+    }
+    void shellSort(int numbers[], int numbersSize, int gapValues[])
+    {
+        for (int i = 0; i < sizeof(gapValues) / sizeof(gapValues[0]); i++)
+        {
+
+            for (int z = 0; z < gapValues[i]; i++)
+            {
+                insertionSortInterleaved(numbers, numbersSize, i, gapValues[i]);
+            }
+        }
     }
 
     //---------------------------------------------------------------------------------
@@ -177,28 +206,90 @@ public:
     //----------------------------------------------------------------------------------
     //                             MERGE SORT
 
-    void mergeSort(int numbers[], int i, int k)
+    void merge(int *numbers, int i, int j, int k)
     {
+        int mergedSize = k - i + 1;
+        int mergePos = 0;
+        int leftPos = 0;
+        int rightPos = 0;
 
-        // void merge(int numbers[], i, j, k){
-        //     int mergedSize = k - i + 1;
-        //     int mergePos = 0;
-        //     int leftPos = 0;
-        //     int rightPos = 0;
+        int *mergedNumbers = new int[mergedSize];
 
-        // }
+        leftPos = i;
+        rightPos = j + 1;
+
+        while (leftPos <= j && rightPos <= k)
+        {
+            if (numbers[leftPos] <= numbers[rightPos])
+            {
+                mergedNumbers[mergePos] = numbers[leftPos];
+                ++leftPos;
+            }
+            else
+            {
+                mergedNumbers[mergePos] = numbers[rightPos];
+                ++rightPos;
+            }
+            ++mergePos;
+        }
+
+        //If left partition is not empty, add remaining elements to merged numbers
+        while (leftPos <= j)
+        {
+            mergedNumbers[mergePos] = numbers[leftPos];
+            ++leftPos;
+            ++mergePos;
+        }
+
+        //If right partition is not empty, add remaining elements to merged numbers
+        while (rightPos <= k)
+        {
+            mergedNumbers[mergePos] = numbers[rightPos];
+            ++rightPos;
+            ++mergePos;
+        }
+
+        //Copy merge number back to numbers
+        for (mergePos = 0; mergePos < mergedSize; ++mergePos)
+        {
+            numbers[i + mergePos] = mergedNumbers[mergePos];
+        }
+    }
+
+    void mergeSort(int *numbers, int i, int k)
+    {
+        int j = 0;
+
+        if (i < k)
+        {
+            j = (i + k);
+            {
+                j = (i + k) / 2; //Find the midpoint in the partition
+                //Recursively sort lef tand right partitions
+
+                mergeSort(numbers, i, j);
+                mergeSort(numbers, i + 1, k);
+
+                //Merge left and right partition in sorted order
+                merge(numbers, i, j, k);
+            }
+        }
     }
 };
 
+// ==================================   MAIN   ==========================================
 int main()
 {
 
     //cout << ("Starting Program") << endl;
 
     //int array[] = {4, 3, 8, 5, 6};
-    int array[] = {10, 2, 78, 4, 45, 32, 7, 11};
+    //int array[] = {10, 2, 78, 4, 45, 32, 7, 11};
+    int array[] = {23, 65, 35, 89, 98, 84, 94, 68, 54, 67, 83, 46, 91, 72, 39};
+    int gapValues[] = {5, 3, 1}; //This array is for the shell sort
 
     int size = sizeof(array) / sizeof(array[0]);
+
     cout << "Size of array: " << size << endl;
     cout << "Unsorted array: ";
 
@@ -214,12 +305,13 @@ int main()
     //algo.selectionSort(array, size);
     //algo.insertionSort(array, size);
 
-    algo.quickSort(array, 0, size - 1);
+    //algo.quickSort(array, 0, size - 1);
+    //algo.mergeSort(array, 0, size - 1);
+    algo.shellSort(array, size, gapValues);
 
-    cout << "Sorted Array: " << endl;
+    cout << "Sorted Array: ";
     for (int z = 0; z < size; z++)
     {
-
         cout << array[z] << " ";
     }
     cout << endl;
