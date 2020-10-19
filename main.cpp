@@ -1,5 +1,8 @@
 #include <iostream>
 #include <list>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -277,6 +280,35 @@ public:
     }
 };
 
+//This function will generate the random arrays based on the size given
+void randArray(int array[], int sizeOfArray)
+{
+    /*    Initialize random seed     */
+    srand(time(NULL));
+
+    cout << "Size of Array: " << sizeOfArray << endl;
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        array[i] = rand() % sizeOfArray + 1;
+    }
+}
+
+void printArray(int array[], int sizeOfArray)
+{
+
+    //Print the line for table
+    // for (int i = 0; i < 100000; i++)
+    // {
+    //     cout << "-";
+    // }
+
+    cout << endl;
+    for (int i = 0; i < sizeOfArray; i++)
+    {
+        cout << array[i] << ", ";
+    }
+}
+
 // ==================================   MAIN   ==========================================
 int main()
 {
@@ -285,34 +317,52 @@ int main()
 
     //int array[] = {4, 3, 8, 5, 6};
     //int array[] = {10, 2, 78, 4, 45, 32, 7, 11};
-    int array[] = {23, 65, 35, 89, 98, 84, 94, 68, 54, 67, 83, 46, 91, 72, 39};
-    int gapValues[] = {5, 3, 1}; //This array is for the shell sort
+    //int array[] = {23, 65, 35, 89, 98, 84, 94, 68, 54, 67, 83, 46, 91, 72, 39};
+    //int gapValues[] = {5, 3, 1}; //This array is for the shell sort
 
-    int size = sizeof(array) / sizeof(array[0]);
+    int array1[1000];
+    int array2[5000];
+    int array3[10000];
+    int array4[50000];
+    int array5[100000];
 
-    cout << "Size of array: " << size << endl;
-    cout << "Unsorted array: ";
+    randArray(array1, sizeof(array1) / sizeof(array1[0]));
+    randArray(array2, sizeof(array2) / sizeof(array2[0]));
+    randArray(array3, sizeof(array3) / sizeof(array3[0]));
+    randArray(array4, sizeof(array4) / sizeof(array4[0]));
+    randArray(array5, sizeof(array5) / sizeof(array5[0]));
 
-    for (int z = 0; z < size; z++)
-    {
+    printArray(array1, sizeof(array1) / sizeof(array1[0]));
+    printArray(array2, sizeof(array2) / sizeof(array2[0]));
+    printArray(array3, sizeof(array3) / sizeof(array3[0]));
+    printArray(array4, sizeof(array4) / sizeof(array4[0]));
+    printArray(array5, sizeof(array5) / sizeof(array5[0]));
 
-        cout << array[z] << " ";
-    }
-    cout << endl;
+    // int size = sizeof(array) / sizeof(array[0]);
 
-    Algorithms algo;
+    // cout << "Size of array: " << size << endl;
+    // cout << "Unsorted array: ";
+
+    // for (int z = 0; z < size; z++)
+    // {
+
+    //     cout << array[z] << " ";
+    // }
+    // cout << endl;
+
+    //Algorithms algo;
 
     //algo.selectionSort(array, size);
     //algo.insertionSort(array, size);
 
     //algo.quickSort(array, 0, size - 1);
     //algo.mergeSort(array, 0, size - 1);
-    algo.shellSort(array, size, gapValues);
+    //algo.shellSort(array, size, gapValues);
 
-    cout << "Sorted Array: ";
-    for (int z = 0; z < size; z++)
-    {
-        cout << array[z] << " ";
-    }
-    cout << endl;
+    // cout << "Sorted Array: ";
+    // for (int z = 0; z < size; z++)
+    // {
+    //     cout << array[z] << " ";
+    // }
+    // cout << endl;
 }
