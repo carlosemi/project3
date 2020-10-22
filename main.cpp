@@ -297,7 +297,7 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
 {
 
     /*                Calling all algorithms for ARRAY1             */
-    Algorithms algo;
+    Algorithms algo; //Creating the algo object which will call all algorithms for each array
 
     cout << endl
          << "               " << x << "TEST " << endl;
@@ -305,15 +305,19 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     /*                         SELECTION SORT                           */
     // Get starting timepoint
     auto start = high_resolution_clock::now();
-    algo.counter = 0;
-    algo.selectionSort(tempArray, size);
+
+    algo.counter = 0;                    //Set counter to 0
+    algo.selectionSort(tempArray, size); //Run selection sort algo
+
     // Get ending timepoint
     auto stop = high_resolution_clock::now();
     // Get duration. Substart timepoints to
     // get durarion. To cast it to proper unit
     // use duration cast method
     auto duration = duration_cast<microseconds>(stop - start);
+
     cout << "Number of comparisons using Selection sort: " << algo.counter << "  |  Running-Time: " << duration.count() << endl;
+
     //Assign back the values of the array to tempArray to re-sort
     for (int i = 0; i < size; i++)
     {
@@ -323,8 +327,10 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     /*                          INSERTION SORT                        */
     // Get starting timepoint
     start = high_resolution_clock::now();
+
     algo.counter = 0;
     algo.insertionSort(tempArray, size);
+
     // Get ending timepoint
     stop = high_resolution_clock::now();
     // Get duration. Substart timepoints to
@@ -332,6 +338,7 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     // use duration cast method
     duration = duration_cast<microseconds>(stop - start);
     cout << "Number of comparisons using Insertion sort: " << algo.counter << "    |  Running-Time: " << duration.count() << endl;
+
     //Assign back the values of the array to tempArray to re-sort
     for (int i = 0; i < size; i++)
     {
@@ -341,15 +348,19 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     /*                           QUICK SORT                            */
     // Get starting timepoint
     start = high_resolution_clock::now();
+
     algo.counter = 0;
     algo.quickSort(tempArray, 0, size - 1);
+
     // Get ending timepoint
     stop = high_resolution_clock::now();
     // Get duration. Substart timepoints to
     // get durarion. To cast it to proper unit
     // use duration cast method
     duration = duration_cast<microseconds>(stop - start);
+
     cout << "Number of comparisons using Quick sort: " << algo.counter << "    |  Running-Time:  " << duration.count() << endl;
+
     //Assign back the values of the array to tempArray to re-sort
     for (int i = 0; i < size; i++)
     {
@@ -359,9 +370,11 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     /*                            SHELL SORT                         */
     // Get starting timepoint
     start = high_resolution_clock::now();
+
     algo.counter = 0;
     int gapValues[size];
 
+    //Get
     for (int z = 0; z < size; z++)
     {
         gapValues[z] = floor(pow(2, log2(size - z)) - 1);
@@ -373,12 +386,14 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
 
     int gapValueSize = sizeof(gapValues) / sizeof(gapValues[0]);
     algo.shellSort(tempArray, size, gapValues, gapValueSize);
+
     // Get ending timepoint
     stop = high_resolution_clock::now();
     // Get duration. Substart timepoints to
     // get durarion. To cast it to proper unit
     // use duration cast method
     duration = duration_cast<microseconds>(stop - start);
+
     cout << "Number of comparisons using Shell Sort: " << algo.counter << "   |  Running-Time: " << duration.count() << endl;
 
     for (int i = 0; i < size; i++)
@@ -389,8 +404,10 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     /*                           MERGE SORT                          */
     // Get starting timepoint
     start = high_resolution_clock::now();
+
     algo.counter = 0;
     algo.mergeSort(tempArray, 0, size - 1);
+
     // Get ending timepoint
     stop = high_resolution_clock::now();
     // Get duration. Substart timepoints to
@@ -398,6 +415,7 @@ void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, stri
     // use duration cast method
     duration = duration_cast<microseconds>(stop - start);
     cout << "Number of comparisons using Merge Sort: " << algo.counter << "   | Running-Time: " << duration.count() << endl;
+
     for (int i = 0; i < size; i++)
     {
         tempArray[i] = array[i];
