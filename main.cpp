@@ -1,3 +1,11 @@
+/*
+Carlos Guerra Falcon
+Id: 20257053
+CSCI 3333 
+Dr. Zhang
+October/21/2020
+*/
+
 #include <iostream>
 #include <list>
 #include <stdio.h>
