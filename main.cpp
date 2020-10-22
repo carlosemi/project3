@@ -3,17 +3,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+#include <thread>
+#include <algorithm>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 class Algorithms
 {
 
+private:
 public:
+    unsigned long int counter = 0;
+
     //                      SELECTION SORT
 
     //This function is for selection sort
-    void selectionSort(int numbers[], int numbersSize)
+    void selectionSort(unsigned int numbers[], int numbersSize)
     {
 
         int i = 0;
@@ -22,6 +30,7 @@ public:
         int indexSmallest = 0;
         int temp = 0;
 
+        counter = 0; //This will determine number of comparisons
         for (i = 0; i < numbersSize; i++)
         {
 
@@ -35,6 +44,7 @@ public:
                 {
                     indexSmallest = j;
                 }
+                counter++;
             }
 
             //Swap numbers[i] and numbers[indexSmallest]
@@ -42,28 +52,19 @@ public:
             numbers[i] = numbers[indexSmallest];
             numbers[indexSmallest] = temp;
         }
-
-        //Print the sorted array
-        cout << "Selection Sort: ";
-        for (int z = 0; z < numbersSize; z++)
-        {
-
-            cout << numbers[z] << " ";
-        }
-
-        cout << endl;
     }
 
     //------------------------------------------------------------------------------
     //                    INSERTION SORT
 
-    void insertionSort(int numbers[], int numbersSize)
+    void insertionSort(unsigned int numbers[], int numbersSize)
     {
         int i = 0;
         int j = 0;
 
         int temp = 0; //Temporary variable for swap
 
+        counter = 0;
         for (i = 1; i < numbersSize; i++)
         {
 
@@ -80,23 +81,14 @@ public:
                 numbers[j - 1] = temp;
 
                 --j;
+
+                counter++;
             }
         }
-
-        //Print the Insertion array
-        cout << "Insertion Sort: ";
-        for (int z = 0; z < numbersSize; z++)
-        {
-
-            cout << numbers[z] << " ";
-        }
-
-        cout << endl;
     }
     //---------------------------------------------------------------------------------
     //                            SHELL SORT
-    // Check because wasn't working perfectly !!!!!
-    void insertionSortInterleaved(int numbers[], int numbersSize, int startIndex, int gap)
+    void insertionSortInterleaved(unsigned int numbers[], int numbersSize, int startIndex, int gap)
     {
         int i = 0;
         int j = 0;
@@ -112,17 +104,20 @@ public:
                 numbers[j] = numbers[j - gap];
                 numbers[j - gap] = temp;
                 j = j - gap;
+                counter++;
             }
+            counter++;
         }
     }
-    void shellSort(int numbers[], int numbersSize, int gapValues[])
-    {
-        for (int i = 0; i < sizeof(gapValues) / sizeof(gapValues[0]); i++)
-        {
 
-            for (int z = 0; z < gapValues[i]; i++)
+    void shellSort(unsigned int numbers[], int numbersSize, int gapValues[], int gapValueSize)
+    {
+
+        for (int i = 0; i < gapValueSize; i++)
+        {
+            for (int z = 0; z < gapValues[z]; z++)
             {
-                insertionSortInterleaved(numbers, numbersSize, i, gapValues[i]);
+                insertionSortInterleaved(numbers, numbersSize, i, gapValues[z]);
             }
         }
     }
@@ -130,7 +125,7 @@ public:
     //---------------------------------------------------------------------------------
     //                             QUICK SORT
 
-    int partition(int numbers[], int i, int k)
+    int partition(unsigned int numbers[], int i, int k)
     {
 
         int l = 0;
@@ -154,12 +149,14 @@ public:
             while (numbers[l] < pivot)
             {
                 l++;
+                counter++;
             }
 
             //Decrement h while pivot < numbers[h]
             while (pivot < numbers[h])
             {
                 h--;
+                counter++;
             }
 
             //If there are zero or one elements remaining,
@@ -167,6 +164,7 @@ public:
             if (l >= h)
             {
                 done = true;
+                counter++;
             }
             else
             {
@@ -184,7 +182,7 @@ public:
         return h;
     }
 
-    int quickSort(int numbers[], int i, int k)
+    int quickSort(unsigned int numbers[], int i, int k)
     {
 
         int j = 0;
@@ -209,7 +207,7 @@ public:
     //----------------------------------------------------------------------------------
     //                             MERGE SORT
 
-    void merge(int *numbers, int i, int j, int k)
+    void merge(unsigned int *numbers, int i, int j, int k)
     {
         int mergedSize = k - i + 1;
         int mergePos = 0;
@@ -234,6 +232,7 @@ public:
                 ++rightPos;
             }
             ++mergePos;
+            counter++;
         }
 
         //If left partition is not empty, add remaining elements to merged numbers
@@ -242,6 +241,7 @@ public:
             mergedNumbers[mergePos] = numbers[leftPos];
             ++leftPos;
             ++mergePos;
+            counter++;
         }
 
         //If right partition is not empty, add remaining elements to merged numbers
@@ -250,6 +250,7 @@ public:
             mergedNumbers[mergePos] = numbers[rightPos];
             ++rightPos;
             ++mergePos;
+            counter++;
         }
 
         //Copy merge number back to numbers
@@ -259,29 +260,27 @@ public:
         }
     }
 
-    void mergeSort(int *numbers, int i, int k)
+    void mergeSort(unsigned int *numbers, int i, int k)
     {
         int j = 0;
 
         if (i < k)
         {
-            j = (i + k);
-            {
-                j = (i + k) / 2; //Find the midpoint in the partition
-                //Recursively sort lef tand right partitions
 
-                mergeSort(numbers, i, j);
-                mergeSort(numbers, i + 1, k);
+            j = (i + k) / 2; //Find the midpoint in the partition
 
-                //Merge left and right partition in sorted order
-                merge(numbers, i, j, k);
-            }
+            //Recursively sort lef tand right partitions
+            mergeSort(numbers, i, j);
+            mergeSort(numbers, j + 1, k);
+
+            //Merge left and right partition in sorted order
+            merge(numbers, i, j, k);
         }
     }
 };
 
 //This function will generate the random arrays based on the size given
-void randArray(int array[], int sizeOfArray)
+void randArray(unsigned int array[], int sizeOfArray)
 {
     /*    Initialize random seed     */
     srand(time(NULL));
@@ -293,76 +292,153 @@ void randArray(int array[], int sizeOfArray)
     }
 }
 
-void printArray(int array[], int sizeOfArray)
+//This function calls all the algorithms for each array which are passed as parameters
+void arrayTesting(unsigned int array[], unsigned int tempArray[], int size, string x)
 {
 
-    //Print the line for table
-    // for (int i = 0; i < 100000; i++)
-    // {
-    //     cout << "-";
-    // }
+    /*                Calling all algorithms for ARRAY1             */
+    Algorithms algo;
 
-    cout << endl;
-    for (int i = 0; i < sizeOfArray; i++)
+    cout << endl
+         << "               " << x << "TEST " << endl;
+
+    /*                         SELECTION SORT                           */
+    // Get starting timepoint
+    auto start = high_resolution_clock::now();
+    algo.counter = 0;
+    algo.selectionSort(tempArray, size);
+    // Get ending timepoint
+    auto stop = high_resolution_clock::now();
+    // Get duration. Substart timepoints to
+    // get durarion. To cast it to proper unit
+    // use duration cast method
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Number of comparisons using Selection sort: " << algo.counter << "  |  Running-Time: " << duration.count() << endl;
+    //Assign back the values of the array to tempArray to re-sort
+    for (int i = 0; i < size; i++)
     {
-        cout << array[i] << ", ";
+        tempArray[i] = array[i];
+    }
+
+    /*                          INSERTION SORT                        */
+    // Get starting timepoint
+    start = high_resolution_clock::now();
+    algo.counter = 0;
+    algo.insertionSort(tempArray, size);
+    // Get ending timepoint
+    stop = high_resolution_clock::now();
+    // Get duration. Substart timepoints to
+    // get durarion. To cast it to proper unit
+    // use duration cast method
+    duration = duration_cast<microseconds>(stop - start);
+    cout << "Number of comparisons using Insertion sort: " << algo.counter << "    |  Running-Time: " << duration.count() << endl;
+    //Assign back the values of the array to tempArray to re-sort
+    for (int i = 0; i < size; i++)
+    {
+        tempArray[i] = array[i];
+    }
+
+    /*                           QUICK SORT                            */
+    // Get starting timepoint
+    start = high_resolution_clock::now();
+    algo.counter = 0;
+    algo.quickSort(tempArray, 0, size - 1);
+    // Get ending timepoint
+    stop = high_resolution_clock::now();
+    // Get duration. Substart timepoints to
+    // get durarion. To cast it to proper unit
+    // use duration cast method
+    duration = duration_cast<microseconds>(stop - start);
+    cout << "Number of comparisons using Quick sort: " << algo.counter << "    |  Running-Time:  " << duration.count() << endl;
+    //Assign back the values of the array to tempArray to re-sort
+    for (int i = 0; i < size; i++)
+    {
+        tempArray[i] = array[i];
+    }
+
+    /*                            SHELL SORT                         */
+    // Get starting timepoint
+    start = high_resolution_clock::now();
+    algo.counter = 0;
+    int gapValues[size];
+
+    for (int z = 0; z < size; z++)
+    {
+        gapValues[z] = floor(pow(2, log2(size - z)) - 1);
+        if (gapValues[z] < 1)
+        {
+            gapValues[z] = 1;
+        }
+    }
+
+    int gapValueSize = sizeof(gapValues) / sizeof(gapValues[0]);
+    algo.shellSort(tempArray, size, gapValues, gapValueSize);
+    // Get ending timepoint
+    stop = high_resolution_clock::now();
+    // Get duration. Substart timepoints to
+    // get durarion. To cast it to proper unit
+    // use duration cast method
+    duration = duration_cast<microseconds>(stop - start);
+    cout << "Number of comparisons using Shell Sort: " << algo.counter << "   |  Running-Time: " << duration.count() << endl;
+
+    for (int i = 0; i < size; i++)
+    {
+        tempArray[i] = array[i];
+    }
+
+    /*                           MERGE SORT                          */
+    // Get starting timepoint
+    start = high_resolution_clock::now();
+    algo.counter = 0;
+    algo.mergeSort(tempArray, 0, size - 1);
+    // Get ending timepoint
+    stop = high_resolution_clock::now();
+    // Get duration. Substart timepoints to
+    // get durarion. To cast it to proper unit
+    // use duration cast method
+    duration = duration_cast<microseconds>(stop - start);
+    cout << "Number of comparisons using Merge Sort: " << algo.counter << "   | Running-Time: " << duration.count() << endl;
+    for (int i = 0; i < size; i++)
+    {
+        tempArray[i] = array[i];
     }
 }
 
 // ==================================   MAIN   ==========================================
 int main()
 {
+    //Initializing the arrays of {10^3, 5x10^3, 10^4, 5x10^4, 10^5} sizes
+    unsigned int array1[1000];
+    unsigned int array2[5000];
+    unsigned int array3[10000];
+    unsigned int array4[50000];
+    unsigned int array5[100000];
 
-    //cout << ("Starting Program") << endl;
+    //Initializing the tempArrays of {10^3, 5x10^3, 10^4, 5x10^4, 10^5} sizes that
+    //will actually be the ones being sorted and after sorting with one sorting algo
+    //will be assigned the values of the originals arrays again to be re-sorted
+    unsigned int tempArray1[1000];
+    unsigned int tempArray2[5000];
+    unsigned int tempArray3[10000];
+    unsigned int tempArray4[50000];
+    unsigned int tempArray5[100000];
 
-    //int array[] = {4, 3, 8, 5, 6};
-    //int array[] = {10, 2, 78, 4, 45, 32, 7, 11};
-    //int array[] = {23, 65, 35, 89, 98, 84, 94, 68, 54, 67, 83, 46, 91, 72, 39};
-    //int gapValues[] = {5, 3, 1}; //This array is for the shell sort
-
-    int array1[1000];
-    int array2[5000];
-    int array3[10000];
-    int array4[50000];
-    int array5[100000];
-
+    //Create random values for each array
     randArray(array1, sizeof(array1) / sizeof(array1[0]));
     randArray(array2, sizeof(array2) / sizeof(array2[0]));
     randArray(array3, sizeof(array3) / sizeof(array3[0]));
     randArray(array4, sizeof(array4) / sizeof(array4[0]));
     randArray(array5, sizeof(array5) / sizeof(array5[0]));
 
-    printArray(array1, sizeof(array1) / sizeof(array1[0]));
-    printArray(array2, sizeof(array2) / sizeof(array2[0]));
-    printArray(array3, sizeof(array3) / sizeof(array3[0]));
-    printArray(array4, sizeof(array4) / sizeof(array4[0]));
-    printArray(array5, sizeof(array5) / sizeof(array5[0]));
+    const int size1 = sizeof(array1) / sizeof(array1[0]);
+    const int size2 = sizeof(array2) / sizeof(array2[0]);
+    const int size3 = sizeof(array3) / sizeof(array3[0]);
+    const int size4 = sizeof(array4) / sizeof(array4[0]);
+    const int size5 = sizeof(array5) / sizeof(array5[0]);
 
-    // int size = sizeof(array) / sizeof(array[0]);
-
-    // cout << "Size of array: " << size << endl;
-    // cout << "Unsorted array: ";
-
-    // for (int z = 0; z < size; z++)
-    // {
-
-    //     cout << array[z] << " ";
-    // }
-    // cout << endl;
-
-    //Algorithms algo;
-
-    //algo.selectionSort(array, size);
-    //algo.insertionSort(array, size);
-
-    //algo.quickSort(array, 0, size - 1);
-    //algo.mergeSort(array, 0, size - 1);
-    //algo.shellSort(array, size, gapValues);
-
-    // cout << "Sorted Array: ";
-    // for (int z = 0; z < size; z++)
-    // {
-    //     cout << array[z] << " ";
-    // }
-    // cout << endl;
+    arrayTesting(array1, tempArray1, size1, "Array1");
+    arrayTesting(array2, tempArray2, size2, "Array2");
+    arrayTesting(array3, tempArray3, size3, "Array3");
+    arrayTesting(array4, tempArray4, size4, "Array4");
+    arrayTesting(array5, tempArray5, size5, "Array5");
 }
